@@ -4,7 +4,8 @@ const {FIREBASE_CONFIG, STORAGE_BASE_URL} = require("./config");
 const {storageBucket} = require("./firebaseHelper");
 
 exports.uploadBase64 = async (base64, pathName = "") => {
-  const fileType = base64.match(/[^:/]\w+(?=;|,)/)[0];
+  // const fileType = base64.match(/[^:/]\w+(?=;|,)/)[0];
+  const fileType = "xlsx";
   if (fileType && !isEmpty(fileType)) {
     const fileName = `${pathName}.${fileType}`;
     const file = storageBucket.file(fileName);

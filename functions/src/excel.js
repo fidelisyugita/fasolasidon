@@ -5,7 +5,7 @@ const {isEmpty, isNil} = require("ramda");
 const {ERROR_MESSAGE} = require("./lib/config");
 const {authenticate} = require("./lib/authHelper");
 const {https} = require("./lib/firebaseHelper");
-const {upload} = require("./lib/storageHelper");
+const {uploadBase64} = require("./lib/storageHelper");
 
 const express = require("express");
 const app = express();
@@ -58,7 +58,7 @@ app.post("/generate", async (req, res) => {
 
     logger.log("START UPLOAD EXCEL");
     const data = {};
-    const publicUrl = await upload(body.excelBase64, "attendances/");
+    const publicUrl = await uploadBase64(body.excelBase64, `tmp/${new Date().getTime()}`);
     if (publicUrl) data.excelUrl = publicUrl;
 
     return res.status(200).json(data);
