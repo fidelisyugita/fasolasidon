@@ -2,7 +2,7 @@
 const {logger} = require("firebase-functions");
 const Excel = require("exceljs");
 
-exports.modify = async (base64, startOrderNo = "28CE22052100000001") => {
+exports.modify = async (base64, lastOrderNo = "28CE22052100000001") => {
   const workbook = new Excel.Workbook();
 
   const encoded = base64.replace(/^data:\w+\/\w+;base64,/, "");
@@ -22,7 +22,7 @@ exports.modify = async (base64, startOrderNo = "28CE22052100000001") => {
     const rowCount = worksheet.actualRowCount;
     for (let i=1; i < rowCount; i++) {
       const row = worksheet.getRow(i+1);
-      row.getCell(1).value = startOrderNo + i; // A5's value set to 5
+      row.getCell(1).value = lastOrderNo + i;
       row.commit();
     }
     return workbook.xlsx.writeBuffer();
