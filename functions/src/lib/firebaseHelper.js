@@ -14,35 +14,35 @@ const runtimeOpts = {
   memory: "512MB",
 };
 const {https, auth} = functions.region(REGION).runWith(runtimeOpts);
-const {firestore, storage} = admin;
-const {arrayUnion, arrayRemove, serverTimestamp, increment} =
-  firestore.FieldValue;
+// const {firestore, storage} = admin;
+// const {arrayUnion, arrayRemove, serverTimestamp, increment} =
+//   firestore.FieldValue;
 
-const storageBucket = storage().bucket(FIREBASE_CONFIG.storageBucket);
+// const storageBucket = storage().bucket(FIREBASE_CONFIG.storageBucket);
 
-const db = firestore();
-db.settings({ignoreUndefinedProperties: true});
+// const db = firestore();
+// db.settings({ignoreUndefinedProperties: true});
 
-// MASTER START
-const configDoc = db.collection("master").doc("config");
-// MASTER END
+// // MASTER START
+// const configDoc = db.collection("master").doc("config");
+// // MASTER END
 
-const usersCollection = db.collection("users");
+// const usersCollection = db.collection("users");
 
 module.exports = {
   https,
   authFunctions: auth,
 
-  storageBucket,
+  // storageBucket,
 
-  arrayUnion,
-  arrayRemove,
-  serverTimestamp,
-  increment,
+  // arrayUnion,
+  // arrayRemove,
+  // serverTimestamp,
+  // increment,
 
-  configDoc,
+  // configDoc,
 
-  usersCollection,
+  // usersCollection,
 
   fauth,
 };
