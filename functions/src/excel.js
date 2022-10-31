@@ -52,7 +52,7 @@ app.use(authenticate);
 
 app.post("/generate", async (req, res) => {
   try {
-    const {excelBase64} = req.body;
+    const {excelBase64, lastOrderNo, percentage} = req.body;
     if (isNil(excelBase64) || isEmpty(excelBase64)) {
       return res.status(405).json(ERROR_MESSAGE.invalidInput);
     }
@@ -60,7 +60,7 @@ app.post("/generate", async (req, res) => {
     logger.log("START UPLOAD EXCEL");
     const data = {};
     // const publicUrl = await uploadBase64(excelBase64, `tmp/${new Date().getTime()}`);
-    const excelBuffer = await modify(excelBase64);
+    const excelBuffer = await modify(excelBase64, lastOrderNo, percentage );
     if (excelBuffer) {
       // data.excelUrl = publicUrl;
 
