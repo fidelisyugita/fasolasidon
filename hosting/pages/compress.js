@@ -14,7 +14,7 @@ export default function Login() {
               <div className="rounded-t mb-0 px-6 py-6">
                 <div className="text-center mb-3">
                   <h6 className="text-blueGray-500 text-sm font-bold">
-                    Sign in with
+                    Dosilaso
                   </h6>
                 </div>
                 {/* <div className="btn-wrapper text-center">
@@ -41,14 +41,9 @@ export default function Login() {
                 </div> */}
                 <form>
                   <div className="relative w-full mb-3">
-                    <label
-                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                      htmlFor="grid-password"
-                    >
-                      Email
-                    </label>
                     <input
-                      type="email"
+                      id="file_input"
+                      type="file"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
                     />
@@ -59,12 +54,27 @@ export default function Login() {
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Password
+                      Percentage
                     </label>
                     <input
-                      type="password"
+                      type="number"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Password"
+                      placeholder="50"
+                      // value={50}
+                    />
+                  </div>
+
+                  <div className="relative w-full mb-3">
+                    <label
+                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      htmlFor="grid-password"
+                    >
+                      Last Order No
+                    </label>
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      placeholder="B4B1BUB3B0"
                     />
                   </div>
                   {/* <div>
@@ -85,7 +95,7 @@ export default function Login() {
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
                     >
-                      Sign In
+                      Generate
                     </button>
                   </div>
                 </form>
