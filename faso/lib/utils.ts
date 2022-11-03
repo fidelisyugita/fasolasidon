@@ -1,10 +1,31 @@
-const {logger} = require("firebase-functions");
-const Excel = require("exceljs");
-const {isNil, isEmpty} = require("ramda");
+import Excel from "exceljs";
+import { isNil, isEmpty } from "ramda";
+import moment from "moment";
 
-const {addDay} = require("./utils");
+export function addDay(date: string, amount = 1, format = "YYMMDD") {
+  if (isNil(date) || isEmpty(date)) return null;
+  return moment(date, format).add(amount, "day").format(format);
+}
 
-exports.modify = async (base64, lastOrderNo = "", percentage = 50) => {
+export function getBase64(filePath: any, callback: any) {
+  const reader = new FileReader();
+  reader.readAsDataURL(filePath);
+  reader.onload = function () {
+    callback(reader.result);
+  };
+  reader.onerror = function (error) {
+    throw error;
+  };
+}
+
+export async function modify(
+  base64: string,
+  lastOrderNo = "",
+  percentage = 50
+) {
+  // if(!lastOrderNo) lastOrderNo = ""
+  // if(!percentage) percentage = 50
+  // console.log("base64: ", base64);
   const workbook = new Excel.Workbook();
 
   const encoded = base64.replace(/^data:\w+\/\w+;base64,/, "");
@@ -16,11 +37,12 @@ exports.modify = async (base64, lastOrderNo = "", percentage = 50) => {
 
     let orderDate = addDay(lastOrderNo?.slice(4, 10));
     if (isNil(lastOrderNo) || isEmpty(lastOrderNo)) {
-      lastOrderNo = worksheet.getRow(2).getCell(1).value;
+      lastOrderNo = String(worksheet.getRow(2).getCell(1).value);
       orderDate = lastOrderNo?.slice(4, 10) || "";
     }
     const prefixOrderNo = `${lastOrderNo?.slice(0, 4)}${orderDate}`;
     let suffixOrderNo = Number(lastOrderNo?.slice(10, 18) || "00000000");
+    // console.log("prefixOrderNo: ", prefixOrderNo);
 
     /**
      * remove unnecessary column
@@ -41,9 +63,9 @@ exports.modify = async (base64, lastOrderNo = "", percentage = 50) => {
     if (percentage < 20) percentage = 20;
     if (percentage > 80) percentage = 80;
     if (percentage < 50) {
-      removeCount = parseInt((100 - percentage) / percentage);
+      removeCount = parseInt(String((100 - percentage) / percentage));
     } else {
-      removeEvery = parseInt(percentage / (100 - percentage));
+      removeEvery = parseInt(String(percentage / (100 - percentage)));
     }
 
     /**
@@ -56,9 +78,9 @@ exports.modify = async (base64, lastOrderNo = "", percentage = 50) => {
       const prevRow = worksheet.getRow(i);
       if (row.getCell(2).value != prevRow.getCell(2).value) {
         suffixOrderNo += 1;
-        console.log("suffixOrderNo: ", suffixOrderNo);
       }
       row.getCell(1).value = `${prefixOrderNo}${suffixOrderNo}`;
+      // console.log("suffixOrderNo: ", suffixOrderNo);
       row.commit();
       if (i % removeEvery == 0) {
         worksheet.spliceRows(i + 2, removeCount);
@@ -68,21 +90,6 @@ exports.modify = async (base64, lastOrderNo = "", percentage = 50) => {
     }
     return workbook.xlsx.writeBuffer();
   } catch (error) {
-    logger.error(error.message);
+    console.log("error: ", error);
   }
-};
-
-exports.modifyPath = async (filePath, newFilePath) => {
-  const workbook = new Excel.Workbook();
-
-  try {
-    await workbook.xlsx.readFile(filePath);
-    const worksheet = workbook.worksheets[0];
-    const row = worksheet.getRow(5);
-    row.getCell(1).value = 5; // A5's value set to 5
-    row.commit();
-    return workbook.xlsx.writeFile(newFilePath || filePath);
-  } catch (error) {
-    logger.error(error.message);
-  }
-};
+}

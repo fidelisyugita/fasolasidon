@@ -3,14 +3,14 @@ const {logger} = require("firebase-functions");
 const {isEmpty, isNil} = require("ramda");
 
 const {ERROR_MESSAGE} = require("./lib/config");
-const {authenticate} = require("./lib/authHelper");
+// const {authenticate} = require("./lib/authHelper");
 const {https} = require("./lib/firebaseHelper");
 // const {uploadBase64} = require("./lib/storageHelper");
 const {modify} = require("./lib/excelHelper");
 
 const express = require("express");
 const app = express();
-app.use(authenticate);
+// app.use(authenticate);
 
 // const SIZE_LIMIT = 1 * 1024 * 1024; // 1MB
 
@@ -51,13 +51,14 @@ app.use(authenticate);
 // });
 
 app.post("/generate", async (req, res) => {
+  logger.log("START GENERATE EXCEL");
   try {
     const {excelBase64, lastOrderNo, percentage} = req.body;
+    logger.log("excelBase64: ", excelBase64);
     if (isNil(excelBase64) || isEmpty(excelBase64)) {
       return res.status(405).json(ERROR_MESSAGE.invalidInput);
     }
 
-    logger.log("START UPLOAD EXCEL");
     const data = {};
     // const publicUrl = await uploadBase64(excelBase64, `tmp/${new Date().getTime()}`);
     const excelBuffer = await modify(excelBase64, lastOrderNo, percentage );
