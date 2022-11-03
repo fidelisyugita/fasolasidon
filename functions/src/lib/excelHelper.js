@@ -56,7 +56,7 @@ exports.modify = async (base64, lastOrderNo = "", percentage = 50) => {
       const prevRow = worksheet.getRow(i);
       if (row.getCell(2).value != prevRow.getCell(2).value) {
         suffixOrderNo += 1;
-        console.log("suffixOrderNo: ", suffixOrderNo);
+        // console.log("suffixOrderNo: ", suffixOrderNo);
       }
       row.getCell(1).value = `${prefixOrderNo}${suffixOrderNo}`;
       row.commit();
