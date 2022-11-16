@@ -6,7 +6,7 @@ module.exports = {
   },
   extends: ["eslint:recommended", "google"],
   parserOptions: {
-    "ecmaVersion": 2020,
+    ecmaVersion: 2020,
   },
   rules: {
     quotes: ["error", "double"],

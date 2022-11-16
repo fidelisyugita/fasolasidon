@@ -21,7 +21,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 
     // const user = { ...data, isLoggedIn: true } as User;
 
-    console.log("req.body: ", JSON.stringify(req.body));
+    // console.log("req.body: ", JSON.stringify(req.body));
     const { email, password } = req.body;
     if (email != "dondonnesia@gmail.com" || password != "12345678")
       throw new Error("Invalidon");
